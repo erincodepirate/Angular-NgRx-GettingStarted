@@ -19,6 +19,7 @@
     "@angular/forms": "~12.2.11",
     "@angular/platform-browser": "~12.2.11",
     "@angular/platform-browser-dynamic": "~12.2.11",
+    "@ngrx/store-devtools": "~12.5.1",
     "@angular/router": "~12.2.11",
     "@ngrx/store": "~12.5.1",
     "bootstrap": "^4.4.1",
