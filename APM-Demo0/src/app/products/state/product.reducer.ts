@@ -1,5 +1,6 @@
 import { createReducer, on,  createFeatureSelector, 
     createSelector } from '@ngrx/store';
+import { Action } from 'rxjs/internal/scheduler/Action';
 import * as AppState from '../../state/app.state';
 import { Product } from '../product';
 import * as ProductActions from './product.actions';
@@ -11,13 +12,15 @@ export interface ProductState {
     currentProductId: number;
     currentProduct: Product
     products: Product[];
+    error: string;
 }
 
 const initialState: ProductState = {
     showProductCode: true,
     currentProductId: null,
     currentProduct: null,
-    products: []
+    products: [],
+    error: ''
 };
 
 const getProductFeatureState = createFeatureSelector<ProductState>('products');
@@ -47,6 +50,11 @@ export const getCurrentProduct = createSelector(
 export const getProducts = createSelector(
     getProductFeatureState,
     state => state.products
+)
+
+export const getError = createSelector(
+    getProductFeatureState,
+    state => state.error
 )
 
 export const productReducer = createReducer<ProductState>(
@@ -87,16 +95,18 @@ export const productReducer = createReducer<ProductState>(
             ...state
         }
     }),
-    on(ProductActions.loadProductsSuccess, (state): ProductState => {
+    on(ProductActions.loadProductsSuccess, (state, action): ProductState => {
         return {
             ...state,
-            products: []
+            products: action.products,
+            error: ''
         }
     }),
-    on(ProductActions.loadProductsFailure,(state): ProductState => {
+    on(ProductActions.loadProductsFailure,(state, action): ProductState => {
         return {
             ...state,
-
+            products: [],
+            error: action.error
         }
     })
 );
